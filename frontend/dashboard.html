@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Desempenho - Estudos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7f9; }
+        .stat-box { 
+            background-color: #ffffff; border-radius: 0.75rem; 
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem; transition: transform 0.2s;
+        }
+        .stat-box:hover { transform: translateY(-2px); }
+        .loading { opacity: 0.6; pointer-events: none; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-4xl font-extrabold text-gray-800 mb-2">Painel de Desempenho</h1>
+            <p class="text-gray-500">Analise a <strong>Média das Notas</strong> dos seus testes por Eixo e por Tema.</p>
+            <div class="flex items-center gap-4 mt-4">
+                <button id="btn-atualizar" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    🔄 Atualizar Dados
+                </button>
+                <a href="index.html" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    📝 Ir para Simulados
+                </a>
+                <span id="loading-indicator" class="hidden text-blue-600 font-medium">Carregando...</span>
+            </div>
+        </header>
+
+        <!-- Seção de Estatísticas Resumo -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="stat-box border-b-4 border-indigo-500">
+                <p class="text-sm font-medium text-gray-500">Média Geral de Testes</p>
+                <p id="media-geral-display" class="text-3xl font-bold text-gray-900 mt-1">--</p>
+            </div>
+            <div class="stat-box border-b-4 border-green-500">
+                <p class="text-sm font-medium text-gray-500">Total de Testes</p>
+                <p id="total-testes-display" class="text-3xl font-bold text-gray-900 mt-1">0</p>
+            </div>
+            <div class="stat-box border-b-4 border-red-500">
+                <p class="text-sm font-medium text-gray-500">Meta</p>
+                <p id="meta-display" class="text-3xl font-bold text-gray-900 mt-1">85.00%</p>
+            </div>
+            <div class="stat-box border-b-4 border-purple-500">
+                <p class="text-sm font-medium text-gray-500">Último Simulado</p>
+                <p id="ultimo-simulado-display" class="text-3xl font-bold text-gray-900 mt-1">--</p>
+            </div>
+        </div>
+
+        <!-- Gráficos Principais -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+            <div class="stat-box">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Desempenho por Eixo</h3>
+                <div class="h-64">
+                    <canvas id="chartEixos"></canvas>
+                </div>
+            </div>
+            <div class="stat-box">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Evolução Temporal</h3>
+                <div class="h-64">
+                    <canvas id="chartEvolucao"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros e Gráfico Detalhado -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-10">
+            <div class="lg:col-span-1 stat-box">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Filtros</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Grupo</label>
+                        <select id="filter-grupo" class="w-full p-2 border border-gray-300 rounded-md">
+                            <option value="todos">Todos os Grupos</option>
+                            <option value="especificos">Específicos</option>
+                            <option value="gerais">Gerais</option>
+                            <option value="revisao">Revisão</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Eixo</label>
+                        <select id="filter-eixo" class="w-full p-2 border border-gray-300 rounded-md">
+                            <option value="todos">Todos os Eixos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tema</label>
+                        <select id="filter-tema" class="w-full p-2 border border-gray-300 rounded-md">
+                            <option value="todos">Todos os Temas</option>
+                        </select>
+                    </div>
+                    <button id="btn-aplicar-filtros" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Aplicar Filtros
+                    </button>
+                    <button id="btn-adicionar-teste" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        ➕ Adicionar Teste
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 stat-box">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Desempenho por Subtema</h3>
+                <div class="h-96">
+                    <canvas id="chartDesempenho"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de Detalhes -->
+        <div class="stat-box">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4">Detalhamento por Subtema</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-700">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-3">Subtema</th>
+                            <th class="px-4 py-3">Eixo</th>
+                            <th class="px-4 py-3">Tema</th>
+                            <th class="px-4 py-3">Média</th>
+                            <th class="px-4 py-3">Testes</th>
+                            <th class="px-4 py-3">Status</th>
+                            <th class="px-4 py-3">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-detalhes">
+                        <!-- Preenchido via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Teste -->
+    <div id="modal-adicionar-teste" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl shadow-lg max-w-md w-full mx-4">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Adicionar Novo Teste</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Subtema</label>
+                    <select id="modal-subtema" class="w-full p-2 border border-gray-300 rounded-md"></select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nota (%)</label>
+                    <input type="number" id="modal-nota" min="0" max="100" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Ex: 85">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+                    <input type="date" id="modal-data" class="w-full p-2 border border-gray-300 rounded-md">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button id="btn-cancelar-modal" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancelar</button>
+                <button id="btn-salvar-teste" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PerformanceDashboard {
+            constructor() {
+                this.performanceData = [];
+                this.charts = {};
+                this.filtros = {
+                    grupo: 'todos',
+                    eixo: 'todos',
+                    tema: 'todos'
+                };
+                
+                this.API_BASE = 'http://localhost:3000/api';
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.carregarDados();
+            }
+
+            bindEvents() {
+                document.getElementById('btn-atualizar').addEventListener('click', () => this.carregarDados());
+                document.getElementById('btn-aplicar-filtros').addEventListener('click', () => this.aplicarFiltros());
+                document.getElementById('btn-adicionar-teste').addEventListener('click', () => this.mostrarModalAdicionarTeste());
+                document.getElementById('btn-cancelar-modal').addEventListener('click', () => this.fecharModal());
+                document.getElementById('btn-salvar-teste').addEventListener('click', () => this.salvarNovoTeste());
+            }
+
+            async carregarDados() {
+                try {
+                    this.mostrarLoading(true);
+                    
+                    console.log('📥 Carregando dados do backend...');
+                    
+                    // Carregar dados de performance
+                    const performanceResponse = await fetch(`${this.API_BASE}/performance`);
+                    
+                    if (!performanceResponse.ok) {
+                        throw new Error(`Erro HTTP: ${performanceResponse.status}`);
+                    }
+                    
+                    this.performanceData = await performanceResponse.json();
+                    console.log('✅ Dados carregados:', this.performanceData);
+                    
+                    // Carregar estatísticas
+                    const statsResponse = await fetch(`${this.API_BASE}/dashboard/stats`);
+                    if (statsResponse.ok) {
+                        const stats = await statsResponse.json();
+                        this.atualizarEstatisticas(stats);
+                    } else {
+                        // Fallback: calcular localmente
+                        const stats = this.calcularEstatisticasLocais();
+                        this.atualizarEstatisticas(stats);
+                    }
+                    
+                    this.inicializarDashboard();
+                    this.mostrarLoading(false);
+                    
+                } catch (error) {
+                    console.error('❌ Erro ao carregar dados:', error);
+                    this.mostrarLoading(false);
+                    
+                    // Fallback: usar dados mockados localmente se o servidor não estiver rodando
+                    console.log('🔄 Tentando carregar dados mockados...');
+                    this.carregarDadosMockados();
+                }
+            }
+
+            carregarDadosMockados() {
+                // Dados mockados de fallback
+                this.performanceData = [
+                    {
+                        "key": "dispensa-1a10",
+                        "eixo": "Eixo Contratos",
+                        "tema": "Contratos - Dispensa", 
+                        "subtema": "Dispensa Art. 75 I a X",
+                        "grupo": "especificos",
+                        "scores": [20, 50, 90, 100, 100, 100, 100, 100]
+                    },
+                    {
+                        "key": "portugues-acento",
+                        "eixo": "Eixo Gerais",
+                        "tema": "Português",
+                        "subtema": "Acentuação Gráfica", 
+                        "grupo": "gerais",
+                        "scores": [90, 80, 85]
+                    }
+                ];
+                
+                const stats = this.calcularEstatisticasLocais();
+                this.atualizarEstatisticas(stats);
+                this.inicializarDashboard();
+            }
+
+            calcularEstatisticasLocais() {
+                if (!this.performanceData || this.performanceData.length === 0) {
+                    return { mediaGeral: 0, totalTestes: 0, meta: 85 };
+                }
+
+                const totalTestes = this.performanceData.reduce((total, item) => total + (item.scores?.length || 0), 0);
+                const todosScores = this.performanceData.flatMap(item => item.scores || []);
+                const mediaGeral = todosScores.length > 0 
+                    ? todosScores.reduce((sum, score) => sum + score, 0) / todosScores.length
+                    : 0;
+
+                return {
+                    mediaGeral: parseFloat(mediaGeral.toFixed(2)),
+                    totalTestes: totalTestes,
+                    meta: 85
+                };
+            }
+
+            mostrarLoading(mostrar) {
+                const indicator = document.getElementById('loading-indicator');
+                indicator.classList.toggle('hidden', !mostrar);
+            }
+
+            atualizarEstatisticas(stats) {
+                console.log('📊 Estatísticas:', stats);
+                
+                const formatarPercentual = (valor) => {
+                    if (valor === undefined || valor === null) return '--';
+                    return `${valor.toFixed(2)}%`;
+                };
+                
+                document.getElementById('media-geral-display').textContent = formatarPercentual(stats.mediaGeral);
+                document.getElementById('total-testes-display').textContent = stats.totalTestes?.toString() || '0';
+                document.getElementById('meta-display').textContent = formatarPercentual(stats.meta || 85);
+                
+                const ultimoScore = this.performanceData
+                    .flatMap(item => item.scores || [])
+                    .filter(score => score !== undefined && score !== null)
+                    .pop();
+                
+                document.getElementById('ultimo-simulado-display').textContent = 
+                    ultimoScore !== undefined ? `${ultimoScore}%` : '--';
+            }
+
+            inicializarDashboard() {
+                this.carregarFiltros();
+                this.criarGraficos();
+                this.atualizarTabelaDetalhes();
+            }
+
+            carregarFiltros() {
+                if (!this.performanceData || this.performanceData.length === 0) return;
+
+                const eixos = [...new Set(this.performanceData.map(item => item.eixo).filter(Boolean))];
+                const temas = [...new Set(this.performanceData.map(item => item.tema).filter(Boolean))];
+                
+                this.popularSelect('filter-eixo', eixos);
+                this.popularSelect('filter-tema', temas);
+            }
+
+            popularSelect(selectId, opcoes) {
+                const select = document.getElementById(selectId);
+                if (!select) return;
+
+                const optionTodos = select.querySelector('option[value="todos"]');
+                select.innerHTML = '';
+                
+                if (optionTodos) {
+                    select.appendChild(optionTodos);
+                }
+                
+                opcoes.forEach(opcao => {
+                    const option = document.createElement('option');
+                    option.value = opcao;
+                    option.textContent = opcao;
+                    select.appendChild(option);
+                });
+            }
+
+            aplicarFiltros() {
+                this.filtros = {
+                    grupo: document.getElementById('filter-grupo').value,
+                    eixo: document.getElementById('filter-eixo').value,
+                    tema: document.getElementById('filter-tema').value
+                };
+                
+                this.atualizarGraficos();
+                this.atualizarTabelaDetalhes();
+            }
+
+            criarGraficos() {
+                if (!this.performanceData || this.performanceData.length === 0) return;
+
+                this.criarGraficoEixos();
+                this.criarGraficoEvolucao();
+                this.criarGraficoDesempenho();
+            }
+
+            criarGraficoEixos() {
+                const ctx = document.getElementById('chartEixos');
+                if (!ctx) return;
+
+                const dadosPorEixo = this.performanceData.reduce((acc, item) => {
+                    if (!item.eixo || !item.scores) return acc;
+                    
+                    if (!acc[item.eixo]) acc[item.eixo] = [];
+                    acc[item.eixo].push(...item.scores);
+                    return acc;
+                }, {});
+
+                const labels = Object.keys(dadosPorEixo);
+                const medias = labels.map(eixo => {
+                    const scores = dadosPorEixo[eixo];
+                    return scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+                });
+                
+                this.destruirChart('eixos');
+                
+                this.charts.eixos = new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: { labels, datasets: [{
+                        label: 'Média por Eixo',
+                        data: medias,
+                        backgroundColor: '#3b82f6',
+                        borderColor: '#1d4ed8',
+                        borderWidth: 1
+                    }]},
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 100, title: { display: true, text: 'Nota (%)' } }
+                        }
+                    }
+                });
+            }
+
+            criarGraficoEvolucao() {
+                const ctx = document.getElementById('chartEvolucao');
+                if (!ctx) return;
+
+                const todosScores = this.performanceData.flatMap(item => item.scores || []);
+                if (todosScores.length === 0) return;
+                
+                this.destruirChart('evolucao');
+                
+                this.charts.evolucao = new Chart(ctx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: todosScores.map((_, i) => `Teste ${i + 1}`),
+                        datasets: [{
+                            label: 'Evolução das Notas',
+                            data: todosScores,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 100, title: { display: true, text: 'Nota (%)' } }
+                        }
+                    }
+                });
+            }
+
+            criarGraficoDesempenho() {
+                const ctx = document.getElementById('chartDesempenho');
+                if (!ctx) return;
+
+                const dadosFiltrados = this.filtrarDados();
+                const labels = dadosFiltrados.map(item => item.subtema);
+                const medias = dadosFiltrados.map(item => 
+                    item.scores.reduce((a, b) => a + b, 0) / item.scores.length
+                );
+                
+                this.destruirChart('desempenho');
+                
+                this.charts.desempenho = new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Média por Subtema',
+                            data: medias,
+                            backgroundColor: medias.map(media => 
+                                media >= 85 ? '#10b981' : media >= 70 ? '#f59e0b' : '#ef4444'
+                            )
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { beginAtZero: true, max: 100, title: { display: true, text: 'Nota Média (%)' } }
+                        }
+                    }
+                });
+            }
+
+            destruirChart(nome) {
+                if (this.charts[nome]) {
+                    this.charts[nome].destroy();
+                }
+            }
+
+            filtrarDados() {
+                return this.performanceData.filter(item => {
+                    const matchGrupo = this.filtros.grupo === 'todos' || item.grupo === this.filtros.grupo;
+                    const matchEixo = this.filtros.eixo === 'todos' || item.eixo === this.filtros.eixo;
+                    const matchTema = this.filtros.tema === 'todos' || item.tema === this.filtros.tema;
+                    return matchGrupo && matchEixo && matchTema;
+                });
+            }
+
+            atualizarGraficos() {
+                this.criarGraficoDesempenho();
+            }
+
+            atualizarTabelaDetalhes() {
+                const tbody = document.getElementById('tabela-detalhes');
+                const dadosFiltrados = this.filtrarDados();
+                
+                tbody.innerHTML = dadosFiltrados.map(item => {
+                    const media = item.scores.reduce((a, b) => a + b, 0) / item.scores.length;
+                    const status = media >= 85 ? '🟢 Excelente' : media >= 70 ? '🟡 Bom' : '🔴 Precisa Melhorar';
+                    
+                    return `
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium">${item.subtema}</td>
+                            <td class="px-4 py-3">${item.eixo}</td>
+                            <td class="px-4 py-3">${item.tema}</td>
+                            <td class="px-4 py-3 font-semibold">${media.toFixed(1)}%</td>
+                            <td class="px-4 py-3">${item.scores.length}</td>
+                            <td class="px-4 py-3">${status}</td>
+                            <td class="px-4 py-3">
+                                <button onclick="dashboard.verDetalhes('${item.key}')" class="text-blue-600 hover:text-blue-800 text-sm">
+                                    📊 Detalhes
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            mostrarModalAdicionarTeste() {
+                const modal = document.getElementById('modal-adicionar-teste');
+                const selectSubtema = document.getElementById('modal-subtema');
+                
+                selectSubtema.innerHTML = this.performanceData.map(item => 
+                    `<option value="${item.key}">${item.subtema}</option>`
+                ).join('');
+                
+                document.getElementById('modal-data').value = new Date().toISOString().split('T')[0];
+                document.getElementById('modal-nota').value = '';
+                
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            fecharModal() {
+                const modal = document.getElementById('modal-adicionar-teste');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            async salvarNovoTeste() {
+                const subtemaKey = document.getElementById('modal-subtema').value;
+                const nota = parseInt(document.getElementById('modal-nota').value);
+                const data = document.getElementById('modal-data').value;
+                
+                if (!this.validarFormulario(subtemaKey, nota, data)) return;
+                
+                try {
+                    const item = this.performanceData.find(i => i.key === subtemaKey);
+                    if (!item) throw new Error('Subtema não encontrado');
+                    
+                    const novosScores = [...item.scores, nota];
+                    
+                    const response = await fetch(`${this.API_BASE}/performance`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            key: item.key,
+                            scores: novosScores,
+                            eixo: item.eixo,
+                            tema: item.tema,
+                            subtema: item.subtema,
+                            grupo: item.grupo
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.fecharModal();
+                        await this.carregarDados();
+                        alert('Teste adicionado com sucesso!');
+                    } else {
+                        throw new Error('Erro ao salvar no servidor');
+                    }
+                    
+                } catch (error) {
+                    console.error('Erro ao salvar teste:', error);
+                    alert('Erro ao salvar teste: ' + error.message);
+                }
+            }
+
+            validarFormulario(subtemaKey, nota, data) {
+                if (!subtemaKey) {
+                    alert('Selecione um subtema!');
+                    return false;
+                }
+                if (isNaN(nota) || nota < 0 || nota > 100) {
+                    alert('Nota deve ser um número entre 0 e 100!');
+                    return false;
+                }
+                if (!data) {
+                    alert('Selecione uma data!');
+                    return false;
+                }
+                return true;
+            }
+
+            verDetalhes(key) {
+                const item = this.performanceData.find(i => i.key === key);
+                if (item) {
+                    const media = (item.scores.reduce((a, b) => a + b, 0) / item.scores.length).toFixed(1);
+                    alert(`Detalhes de ${item.subtema}:\n\nNotas: ${item.scores.join(', ')}\nMédia: ${media}%\nTotal de testes: ${item.scores.length}`);
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            window.dashboard = new PerformanceDashboard();
+        });
+    </script>
+</body>
+</html>
