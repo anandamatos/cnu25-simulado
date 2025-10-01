@@ -39,5 +39,15 @@
     "scores": [
       80
     ]
+  },
+  {
+    "key": "modalidades--dispensa-1-a-10",
+    "scores": [
+      0
+    ],
+    "eixo": "Eixo 4 - Licitações e LRF",
+    "tema": "Eixo 4 - Licitações e LRF",
+    "subtema": "Modalidades & Dispensa: 1 a 10",
+    "grupo": "especificos"
   }
 ]

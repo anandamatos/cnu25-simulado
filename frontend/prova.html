@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado CNU - Prova</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/prova.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header da Prova -->
+        <header class="prova-header">
+            <div class="prova-info">
+                <h1 id="prova-titulo">Simulado CNU</h1>
+                <div class="prova-meta">
+                    <span id="prova-tipo"></span>
+                    <span id="prova-eixo"></span>
+                    <span id="prova-materia"></span>
+                </div>
+            </div>
+            <div class="prova-controls">
+                <div class="timer" id="timer">60:00</div>
+                <button id="btn-finalizar" class="btn btn-danger">Finalizar Prova</button>
+            </div>
+        </header>
+
+        <!-- Progresso -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="questao-atual">1</span> de <span id="total-questoes">0</span>
+            </div>
+        </div>
+
+        <!-- Área da Questão -->
+        <main class="prova-main">
+            <div class="questao-container">
+                <div class="questao-header">
+                    <h3 id="questao-numero">Questão 1</h3>
+                    <div class="questao-actions">
+                        <button id="btn-marcar" class="btn btn-outline">Marcar para Revisar</button>
+                        <button id="btn-anterior" class="btn btn-outline">← Anterior</button>
+                        <button id="btn-proxima" class="btn btn-primary">Próxima →</button>
+                    </div>
+                </div>
+                
+                <div class="questao-enunciado" id="questao-enunciado">
+                    Carregando questão...
+                </div>
+                
+                <div class="alternativas" id="alternativas">
+                    <!-- Alternativas serão inseridas aqui -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Navegação Rápida -->
+        <footer class="prova-footer">
+            <div class="navegacao-rapida">
+                <h4>Navegação Rápida</h4>
+                <div class="questoes-grid" id="questoes-grid">
+                    <!-- Grid de questões será gerado aqui -->
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="modal-finalizar" class="modal">
+        <div class="modal-content">
+            <h3>Finalizar Prova</h3>
+            <p>Tem certeza que deseja finalizar a prova? Esta ação não pode ser desfeita.</p>
+            <div class="modal-actions">
+                <button id="btn-cancelar" class="btn btn-outline">Cancelar</button>
+                <button id="btn-confirmar-finalizar" class="btn btn-danger">Finalizar Prova</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/prova.js"></script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+class GerenciadorProva {
+    constructor() {
+        this.questoes = [];
+        this.questaoAtual = 0;
+        this.respostas = new Map();
+        this.questoesMarcadas = new Set();
+        this.tempoInicio = null;
+        this.timerInterval = null;
+        
+        this.inicializarElementos();
+        this.inicializarEventos();
+        this.carregarProva();
+    }
+
+    inicializarElementos() {
+        // Elementos da interface
+        this.elements = {
+            provaTitulo: document.getElementById('prova-titulo'),
+            provaTipo: document.getElementById('prova-tipo'),
+            provaEixo: document.getElementById('prova-eixo'),
+            provaMateria: document.getElementById('prova-materia'),
+            timer: document.getElementById('timer'),
+            btnFinalizar: document.getElementById('btn-finalizar'),
+            progressFill: document.getElementById('progress-fill'),
+            questaoAtual: document.getElementById('questao-atual'),
+            totalQuestoes: document.getElementById('total-questoes'),
+            questaoNumero: document.getElementById('questao-numero'),
+            questaoEnunciado: document.getElementById('questao-enunciado'),
+            alternativas: document.getElementById('alternativas'),
+            btnMarcar: document.getElementById('btn-marcar'),
+            btnAnterior: document.getElementById('btn-anterior'),
+            btnProxima: document.getElementById('btn-proxima'),
+            questoesGrid: document.getElementById('questoes-grid'),
+            modalFinalizar: document.getElementById('modal-finalizar'),
+            btnCancelar: document.getElementById('btn-cancelar'),
+            btnConfirmarFinalizar: document.getElementById('btn-confirmar-finalizar')
+        };
+    }
+
+    inicializarEventos() {
+        // Navegação
+        this.elements.btnAnterior.addEventListener('click', () => this.questaoAnterior());
+        this.elements.btnProxima.addEventListener('click', () => this.proximaQuestao());
+        this.elements.btnMarcar.addEventListener('click', () => this.marcarQuestao());
+        this.elements.btnFinalizar.addEventListener('click', () => this.mostrarModalFinalizar());
+        
+        // Modal
+        this.elements.btnCancelar.addEventListener('click', () => this.fecharModal());
+        this.elements.btnConfirmarFinalizar.addEventListener('click', () => this.finalizarProva());
+        
+        // Teclado
+        document.addEventListener('keydown', (e) => this.handleTeclado(e));
+    }
+
+    async carregarProva() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const blocoId = urlParams.get('bloco');
+            
+            if (!blocoId) {
+                throw new Error('Bloco não especificado');
+            }
+
+            // Carregar questões do bloco
+            const response = await fetch(`/api/bloco-questions/${blocoId}`);
+            const data = await response.json();
+            
+            if (!data.success) {
+                throw new Error(data.error || 'Erro ao carregar questões');
+            }
+
+            this.questoes = data.questions;
+            this.iniciarProva();
+            
+        } catch (error) {
+            console.error('Erro ao carregar prova:', error);
+            alert('Erro ao carregar a prova. Voltando para a página inicial.');
+            window.location.href = '/';
+        }
+    }
+
+    iniciarProva() {
+        // Configurar informações da prova
+        this.elements.totalQuestoes.textContent = this.questoes.length;
+        this.elements.provaTitulo.textContent = 'Simulado CNU - Prova em Andamento';
+        
+        // Iniciar timer (60 minutos)
+        this.tempoInicio = new Date();
+        this.iniciarTimer();
+        
+        // Mostrar primeira questão
+        this.mostrarQuestao(0);
+        this.atualizarNavegacaoRapida();
+        this.atualizarProgresso();
+    }
+
+    iniciarTimer() {
+        const tempoTotal = 60 * 60 * 1000; // 60 minutos em milissegundos
+        
+        this.timerInterval = setInterval(() => {
+            const agora = new Date();
+            const tempoDecorrido = agora - this.tempoInicio;
+            const tempoRestante = tempoTotal - tempoDecorrido;
+            
+            if (tempoRestante <= 0) {
+                this.finalizarProva();
+                return;
+            }
+            
+            const minutos = Math.floor(tempoRestante / 60000);
+            const segundos = Math.floor((tempoRestante % 60000) / 1000);
+            
+            this.elements.timer.textContent = 
+                `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+                
+            // Mudar cor quando faltar pouco tempo
+            if (minutos < 5) {
+                this.elements.timer.style.color = '#dc3545';
+                this.elements.timer.style.animation = 'pulse 1s infinite';
+            }
+            
+        }, 1000);
+    }
+
+    mostrarQuestao(indice) {
+        if (indice < 0 || indice >= this.questoes.length) return;
+        
+        this.questaoAtual = indice;
+        const questao = this.questoes[indice];
+        
+        // Atualizar interface
+        this.elements.questaoNumero.textContent = `Questão ${indice + 1}`;
+        this.elements.questaoAtual.textContent = indice + 1;
+        this.elements.questaoEnunciado.innerHTML = this.formatarEnunciado(questao.enunciado);
+        
+        // Mostrar alternativas
+        this.mostrarAlternativas(questao.alternativas);
+        
+        // Atualizar botão de marcar
+        this.atualizarBotaoMarcar();
+        
+        // Atualizar navegação
+        this.atualizarBotoesNavegacao();
+        this.atualizarNavegacaoRapida();
+        this.atualizarProgresso();
+    }
+
+    formatarEnunciado(enunciado) {
+        // Converter quebras de linha e formatar texto
+        return enunciado
+            .replace(/\n/g, '<br>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>');
+    }
+
+    mostrarAlternativas(alternativas) {
+        this.elements.alternativas.innerHTML = '';
+        
+        const alternativasLetras = ['A', 'B', 'C', 'D', 'E'];
+        
+        alternativas.forEach((alternativa, index) => {
+            if (index >= 5) return; // Limitar a 5 alternativas
+            
+            const div = document.createElement('div');
+            div.className = 'alternativa';
+            div.dataset.indice = index;
+            
+            const respostaSelecionada = this.respostas.get(this.questaoAtual);
+            const isSelecionada = respostaSelecionada === index;
+            
+            if (isSelecionada) {
+                div.classList.add('selecionada');
+            }
+            
+            div.innerHTML = `
+                <div class="alternativa-marcador">${alternativasLetras[index]}</div>
+                <div class="alternativa-texto">${this.formatarEnunciado(alternativa)}</div>
+            `;
+            
+            div.addEventListener('click', () => this.selecionarAlternativa(index));
+            this.elements.alternativas.appendChild(div);
+        });
+    }
+
+    selecionarAlternativa(indiceAlternativa) {
+        this.respostas.set(this.questaoAtual, indiceAlternativa);
+        this.mostrarQuestao(this.questaoAtual); // Recarregar para atualizar seleção
+    }
+
+    marcarQuestao() {
+        if (this.questoesMarcadas.has(this.questaoAtual)) {
+            this.questoesMarcadas.delete(this.questaoAtual);
+        } else {
+            this.questoesMarcadas.add(this.questaoAtual);
+        }
+        
+        this.atualizarBotaoMarcar();
+        this.atualizarNavegacaoRapida();
+    }
+
+    atualizarBotaoMarcar() {
+        const isMarcada = this.questoesMarcadas.has(this.questaoAtual);
+        this.elements.btnMarcar.textContent = isMarcada ? 
+            'Desmarcar Revisão' : 'Marcar para Revisar';
+        this.elements.btnMarcar.className = isMarcada ? 
+            'btn btn-warning' : 'btn btn-outline';
+    }
+
+    questaoAnterior() {
+        if (this.questaoAtual > 0) {
+            this.mostrarQuestao(this.questaoAtual - 1);
+        }
+    }
+
+    proximaQuestao() {
+        if (this.questaoAtual < this.questoes.length - 1) {
+            this.mostrarQuestao(this.questaoAtual + 1);
+        } else {
+            this.mostrarModalFinalizar();
+        }
+    }
+
+    atualizarBotoesNavegacao() {
+        this.elements.btnAnterior.disabled = this.questaoAtual === 0;
+        
+        if (this.questaoAtual === this.questoes.length - 1) {
+            this.elements.btnProxima.textContent = 'Finalizar →';
+        } else {
+            this.elements.btnProxima.textContent = 'Próxima →';
+        }
+    }
+
+    atualizarNavegacaoRapida() {
+        this.elements.questoesGrid.innerHTML = '';
+        
+        this.questoes.forEach((_, index) => {
+            const miniatura = document.createElement('div');
+            miniatura.className = 'questao-miniatura';
+            miniatura.textContent = index + 1;
+            
+            // Status da questão
+            if (this.respostas.has(index)) {
+                miniatura.classList.add('respondida');
+            }
+            
+            if (this.questoesMarcadas.has(index)) {
+                miniatura.classList.add('marcada');
+            }
+            
+            if (index === this.questaoAtual) {
+                miniatura.classList.add('atual');
+            }
+            
+            miniatura.addEventListener('click', () => this.mostrarQuestao(index));
+            this.elements.questoesGrid.appendChild(miniatura);
+        });
+    }
+
+    atualizarProgresso() {
+        const progresso = ((this.questaoAtual + 1) / this.questoes.length) * 100;
+        this.elements.progressFill.style.width = `${progresso}%`;
+    }
+
+    handleTeclado(e) {
+        switch(e.key) {
+            case 'ArrowLeft':
+                e.preventDefault();
+                this.questaoAnterior();
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                this.proximaQuestao();
+                break;
+            case ' ':
+                e.preventDefault();
+                this.marcarQuestao();
+                break;
+            case '1': case '2': case '3': case '4': case '5':
+                e.preventDefault();
+                const alternativa = parseInt(e.key) - 1;
+                if (alternativa >= 0 && alternativa < 5) {
+                    this.selecionarAlternativa(alternativa);
+                }
+                break;
+        }
+    }
+
+    mostrarModalFinalizar() {
+        this.elements.modalFinalizar.classList.add('active');
+    }
+
+    fecharModal() {
+        this.elements.modalFinalizar.classList.remove('active');
+    }
+
+    finalizarProva() {
+        clearInterval(this.timerInterval);
+        this.fecharModal();
+        
+        // Calcular resultado
+        const resultado = this.calcularResultado();
+        
+        // Salvar resultado (poderia ser enviado para o backend)
+        localStorage.setItem('ultimoResultado', JSON.stringify(resultado));
+        
+        // Redirecionar para página de resultados
+        window.location.href = `/resultado.html?bloco=${this.getBlocoId()}`;
+    }
+
+    calcularResultado() {
+        let acertos = 0;
+        const detalhes = [];
+        
+        this.questoes.forEach((questao, index) => {
+            const respostaUsuario = this.respostas.get(index);
+            const respostaCorreta = questao.respostaCorreta || 0; // Fallback para primeira alternativa
+            
+            const acertou = respostaUsuario === respostaCorreta;
+            if (acertou) acertos++;
+            
+            detalhes.push({
+                questao: index + 1,
+                enunciado: questao.enunciado,
+                respostaUsuario,
+                respostaCorreta,
+                acertou,
+                marcada: this.questoesMarcadas.has(index)
+            });
+        });
+        
+        return {
+            totalQuestoes: this.questoes.length,
+            acertos,
+            percentual: (acertos / this.questoes.length) * 100,
+            tempoDecorrido: new Date() - this.tempoInicio,
+            detalhes
+        };
+    }
+
+    getBlocoId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('bloco');
+    }
+}
+
+// Inicializar quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', () => {
+    new GerenciadorProva();
+});

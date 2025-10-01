@@ -189,6 +189,16 @@ app.get('/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
+// Servir página de prova
+app.get('/prova.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/prova.html'));
+});
+
+// Servir página de resultados (para implementar depois)
+app.get('/resultado.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/resultado.html'));
+});
+
 // Inicializar servidor
 app.listen(PORT, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);

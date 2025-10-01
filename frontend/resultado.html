@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado CNU - Resultados</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/resultado.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="resultado-header">
+            <h1>📊 Resultado do Simulado</h1>
+            <a href="/" class="btn btn-outline">Voltar ao Início</a>
+        </header>
+
+        <!-- Resumo do Resultado -->
+        <section class="resumo-resultado">
+            <div class="card resultado-card">
+                <div class="resultado-principal">
+                    <div class="pontuacao">
+                        <div class="nota-final">
+                            <span class="nota" id="nota-final">0</span>
+                            <span class="label">Pontuação</span>
+                        </div>
+                        <div class="estatisticas">
+                            <div class="estatistica">
+                                <span class="valor" id="total-questoes">0</span>
+                                <span class="label">Total</span>
+                            </div>
+                            <div class="estatistica acertos">
+                                <span class="valor" id="total-acertos">0</span>
+                                <span class="label">Acertos</span>
+                            </div>
+                            <div class="estatistica erros">
+                                <span class="valor" id="total-erros">0</span>
+                                <span class="label">Erros</span>
+                            </div>
+                            <div class="estatistica">
+                                <span class="valor" id="percentual">0%</span>
+                                <span class="label">Aproveitamento</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tempo-info">
+                        <div class="tempo-decorrido">
+                            <span class="label">Tempo Gasto</span>
+                            <span class="valor" id="tempo-gasto">00:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detalhamento por Questão -->
+        <section class="detalhamento-questoes">
+            <h2>📝 Detalhamento por Questão</h2>
+            <div class="questoes-lista" id="questoes-lista">
+                <!-- Lista de questões será gerada aqui -->
+            </div>
+        </section>
+
+        <!-- Ações -->
+        <section class="acoes-resultado">
+            <div class="botoes-acao">
+                <button id="btn-revisar-erros" class="btn btn-warning">Revisar Questões Erradas</button>
+                <button id="btn-nova-prova" class="btn btn-primary">Fazer Nova Prova</button>
+                <button id="btn-exportar" class="btn btn-outline">Exportar Resultado</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal de Detalhes da Questão -->
+    <div id="modal-questao" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="modal-titulo">Questão #1</h3>
+                <button class="btn-close" id="btn-fechar-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="questao-completa">
+                    <div class="enunciado-modal" id="enunciado-modal"></div>
+                    <div class="alternativas-modal" id="alternativas-modal"></div>
+                    <div class="explicacao" id="explicacao-modal">
+                        <h4>📚 Explicação</h4>
+                        <p id="texto-explicacao">Explicação não disponível.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/resultado.js"></script>
+</body>
+</html>
