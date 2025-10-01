@@ -1,0 +1,281 @@
+// server.js - ADICIONAR ESTAS FUNÇÕES
+
+// Configurações das provas
+const PROVA_CONFIG = {
+    'objetiva': {
+        total: 90,
+        distribuicao: {
+            'gerais': 30,
+            'especificos': 60
+        }
+    },
+    'gerais': {
+        temas: {
+            'Políticas Públicas': 30,
+            'Ética e Integridade': 30,
+            'Democracia/Cidadania': 30,
+            'Federalismo': 30
+        }
+    },
+    'especificos': {
+        eixos: {
+            'Eixo 4': {
+                'Licitações': 200,
+                'LRF': 200,
+                'Lei 4.320/64': 200,
+                'Contabilidade Pública': 200
+            },
+            'Eixo 1': {
+                'Governança Pública': 200,
+                'Controles Internos': 200,
+                'Planejamento Estratégico': 200,
+                'Gestão por Processos': 200,
+                'Gestão de Riscos': 200
+            },
+            'Eixo 2': {
+                'Inovação Pública': 200
+            },
+            'Eixo 5': {
+                'LGPD/LAI': 200
+            }
+        }
+    }
+};
+
+// Gerar sequência Fibonacci * 10 (limitado a 200)
+function gerarOpcoesFibonacci(max = 200) {
+    const fibonacci = [1, 1, 2, 3, 5, 8, 13, 21];
+    return fibonacci.map(n => n * 10).filter(n => n <= max);
+}
+
+// API para obter configurações da prova
+app.get('/api/prova-config', (req, res) => {
+    res.json(PROVA_CONFIG);
+});
+
+// API para obter questões por tipo de prova
+app.get('/api/prova-questions', async (req, res) => {
+    const { tipo, categoria, subcategoria, numQuestions } = req.query;
+    
+    try {
+        let questions = [];
+        
+        if (tipo === 'objetiva') {
+            // Buscar 30 questões de conhecimentos gerais
+            const gerais = await getQuestionsFromDB('Gerais', null, 30);
+            // Buscar 60 questões de conhecimentos específicos
+            const especificos = await getQuestionsFromDB('Específicos', null, 60);
+            
+            questions = [...gerais, ...especificos];
+            
+        } else if (tipo === 'gerais') {
+            if (categoria === 'completa') {
+                questions = await getQuestionsFromDB('Gerais', null, 30);
+            } else {
+                questions = await getQuestionsFromDB('Gerais', categoria, parseInt(numQuestions));
+            }
+            
+        } else if (tipo === 'especificos') {
+            if (categoria === 'completa') {
+                questions = await getQuestionsFromDB('Específicos', null, 60);
+            } else {
+                questions = await getQuestionsFromDB('Específicos', subcategoria, parseInt(numQuestions));
+            }
+        }
+        
+        // Embaralhar questões
+        questions = shuffleArray(questions);
+        res.json(questions);
+        
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Função auxiliar para buscar questões do banco
+function getQuestionsFromDB(axis, subject, limit) {
+    return new Promise((resolve, reject) => {
+        let query = `SELECT * FROM questions WHERE knowledge_axis = ?`;
+        let params = [axis];
+        
+        if (subject) {
+            query += ` AND subject_area = ?`;
+            params.push(subject);
+        }
+        
+        query += ` ORDER BY RANDOM() LIMIT ?`;
+        params.push(limit);
+        
+        db.all(query, params, (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+        });
+    });
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// server.js - ADICIONAR ESTAS ROTAS
+
+// Servir arquivos estáticos do frontend
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// API para estrutura do dashboard
+app.get('/api/dashboard/structure', (req, res) => {
+    const structure = require('../frontend/data/dashboard-structure.json');
+    res.json(structure);
+});
+
+// API para dados de performance
+app.get('/api/dashboard/performance', (req, res) => {
+    db.all(`SELECT * FROM performance_data WHERE user_id = 1`, (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        
+        // Converter scores de string para array
+        const formattedData = rows.map(row => ({
+            ...row,
+            scores: JSON.parse(row.scores)
+        }));
+        
+        res.json(formattedData);
+    });
+});
+
+// API para atualizar dados de performance
+app.post('/api/dashboard/performance', (req, res) => {
+    const { key, scores, eixo, tema, subtema, grupo } = req.body;
+    
+    const query = `INSERT OR REPLACE INTO performance_data 
+                   (user_id, key, scores, eixo, tema, subtema, grupo) 
+                   VALUES (1, ?, ?, ?, ?, ?, ?)`;
+    
+    db.run(query, [key, JSON.stringify(scores), eixo, tema, subtema, grupo], function(err) {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ id: this.lastID });
+    });
+});
+
+// API para estatísticas do dashboard
+app.get('/api/dashboard/stats', async (req, res) => {
+    try {
+        const performanceData = await new Promise((resolve, reject) => {
+            db.all(`SELECT * FROM performance_data WHERE user_id = 1`, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+
+        const quizSessions = await new Promise((resolve, reject) => {
+            db.all(`SELECT * FROM quiz_sessions ORDER BY completed_at DESC LIMIT 50`, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+
+        // Calcular estatísticas
+        const allScores = performanceData.flatMap(item => JSON.parse(item.scores));
+        const mediaGeral = allScores.length > 0 ? 
+            allScores.reduce((a, b) => a + b, 0) / allScores.length : 0;
+
+        const totalTestes = allScores.length;
+
+        res.json({
+            mediaGeral,
+            totalTestes,
+            ultimosSimulados: quizSessions,
+            desempenhoPorEixo: calcularDesempenhoPorEixo(performanceData)
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+function calcularDesempenhoPorEixo(performanceData) {
+    const desempenho = {};
+    
+    performanceData.forEach(item => {
+        const scores = JSON.parse(item.scores);
+        if (scores.length > 0) {
+            const media = scores.reduce((a, b) => a + b, 0) / scores.length;
+            if (!desempenho[item.eixo]) {
+                desempenho[item.eixo] = { total: 0, count: 0 };
+            }
+            desempenho[item.eixo].total += media;
+            desempenho[item.eixo].count += 1;
+        }
+    });
+
+    // Calcular médias
+    Object.keys(desempenho).forEach(eixo => {
+        desempenho[eixo] = desempenho[eixo].total / desempenho[eixo].count;
+    });
+
+    return desempenho;
+}
+// =============================================
+// NOVAS ROTAS PARA O SIMULADO
+// =============================================
+
+// Configurações das provas
+        let query = `SELECT * FROM questions WHERE knowledge_axis = ?`;
+        let params = [knowledgeAxis];
+        
+        if (subjectArea && subjectArea !== 'completa' && subjectArea !== 'null') {
+            query += ` AND subject_area = ?`;
+            params.push(subjectArea);
+        }
+        
+        query += ` ORDER BY RANDOM() LIMIT ?`;
+        params.push(limit);
+        
+        console.log(`🔍 Executando query: ${query}`);
+        console.log(`🔍 Parâmetros: [${params.join(', ')}]`);
+        
+        db.all(query, params, (err, rows) => {
+            if (err) {
+                console.error('❌ Erro na query:', err);
+                reject(err);
+            } else {
+                console.log(`📚 Encontradas ${rows.length} questões para ${knowledgeAxis} - ${subjectArea || 'todos assuntos'}`);
+                resolve(rows);
+            }
+        });
+    });
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// API para salvar resultado do quiz
+app.post('/api/quiz-results', (req, res) => {
+    const { subjectArea, knowledgeAxis, numQuestions, score, percentage } = req.body;
+    
+    console.log(`💾 Salvando resultado: ${score}/${numQuestions} (${percentage}%) - ${knowledgeAxis} - ${subjectArea}`);
+    
+    const query = `INSERT INTO quiz_sessions (subject_area, knowledge_axis, num_questions, score, percentage) 
+                   VALUES (?, ?, ?, ?, ?)`;
+    
+    db.run(query, [subjectArea, knowledgeAxis, numQuestions, score, percentage], function(err) {
+        if (err) {
+            console.error('❌ Erro ao salvar resultado:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        console.log(`✅ Resultado salvo com ID: ${this.lastID}`);
+        res.json({ id: this.lastID });
+    });
+});

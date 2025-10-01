@@ -1,0 +1,28 @@
+[
+    {
+        "question_text": "À luz do disposto na Lei nº 14.133/2021, é INCORRETO afirmar que:",
+        "option_a": "o prazo máximo para pagamento pela Administração Pública, contado da apresentação da fatura, é de 30 dias.",
+        "option_b": "a administração poderá, em caso de atraso no pagamento, ser compelida a pagar correção monetária e juros legais.",
+        "option_c": "o contratado pode suspender a execução do contrato se o atraso no pagamento exceder 60 dias.",
+        "option_d": "o prazo para pagamento pode ser estipulado em calendário próprio, desde que não ultrapasse 30 dias da apresentação da fatura.",
+        "option_e": "a fatura ou documento equivalente deve conter todos os elementos necessários à comprovação da prestação do serviço ou fornecimento.",
+        "correct_option": 2,
+        "explanation": "A alternativa C está incorreta porque a Lei 14.133/2021 não prevê expressamente a suspensão da execução do contrato por atraso no pagamento.",
+        "subject_area": "Modalidades",
+        "knowledge_axis": "Específicos",
+        "law_reference": "Art. 113"
+    },
+    {
+        "question_text": "De acordo com a Lei 14.133/2021, assinale a alternativa que indica APENAS modalidades de licitação que podem ser realizadas por meio eletrônico:",
+        "option_a": "Pregão, Concorrência e Tomada de Preços.",
+        "option_b": "Convite, Concurso e Leilão.",
+        "option_c": "Diálogo Competitivo, Credenciamento e Tomada de Preços.",
+        "option_d": "Pregão, Convite e Credenciamento.",
+        "option_e": "Concorrência, Tomada de Preços e Convite.",
+        "correct_option": 0,
+        "explanation": "A alternativa A está correta porque as modalidades Pregão, Concorrência e Tomada de Preços são comumente realizadas por meio eletrônico.",
+        "subject_area": "Modalidades",
+        "knowledge_axis": "Específicos",
+        "law_reference": "Art. 6º, V"
+    }
+]

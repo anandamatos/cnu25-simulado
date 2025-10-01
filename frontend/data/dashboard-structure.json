@@ -1,0 +1,61 @@
+{
+  "meta": 85,
+  "estrutura_provas": {
+    "objetiva": {
+      "total": 90,
+      "distribuicao": {
+        "gerais": 30,
+        "especificos": 60
+      }
+    },
+    "gerais": {
+      "temas": {
+        "Políticas Públicas": 30,
+        "Ética e Integridade": 30,
+        "Democracia/Cidadania": 30,
+        "Federalismo": 30
+      }
+    },
+    "especificos": {
+      "eixos": {
+        "Eixo 4": {
+          "Licitações": 200,
+          "LRF": 200,
+          "Lei 4.320/64": 200,
+          "Contabilidade Pública": 200
+        },
+        "Eixo 1": {
+          "Governança Pública": 200,
+          "Controles Internos": 200,
+          "Planejamento Estratégico": 200,
+          "Gestão por Processos": 200,
+          "Gestão de Riscos": 200
+        },
+        "Eixo 2": {
+          "Inovação Pública": 200
+        },
+        "Eixo 5": {
+          "LGPD/LAI": 200
+        }
+      }
+    }
+  },
+  "subtemas": [
+    {
+      "key": "modalidadesDispensa1a10",
+      "eixo": "Eixo 4",
+      "tema": "Licitações",
+      "subtema": "Dispensa/Modalidades (1-10)",
+      "grupo": "especificos",
+      "scores": []
+    },
+    {
+      "key": "modalidadesDispensa11a20",
+      "eixo": "Eixo 4",
+      "tema": "Licitações",
+      "subtema": "Dispensa/Modalidades (11-20)",
+      "grupo": "especificos",
+      "scores": []
+    }
+  ]
+}

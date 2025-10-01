@@ -1,0 +1,265 @@
+
+{
+  "sessao_id": "Lei14133-2021-Modalidades-Dispensa-001",
+  "tema": "Questões Lei 14.133/2021 (modalidades, dispensa)",
+  "base_legal": "Lei 14133/2021",
+  "dispositivos_foco": "Art. 6º, Art. 49, Art. 60, Art. 74, Art. 113, Art. 162, Art. 171",
+  "total_questoes": 10,
+  "distribuicao_dificuldade": {
+    "facil": "30%",
+    "medio": "50%",
+    "dificil": "20%"
+  },
+  "questoes": [
+    {
+      "id": "1",
+      "dificuldade": "Medio",
+      "enunciado": "À luz do disposto na Lei nº 14.133/2021, é INCORRETO afirmar que:",
+      "alternativas": {
+        "A": "o prazo máximo para pagamento pela Administração Pública, contado da apresentação da fatura, é de 30 dias.",
+        "B": "a administração poderá, em caso de atraso no pagamento, ser compelida a pagar correção monetária e juros legais.",
+        "C": "o contratado pode suspender a execução do contrato se o atraso no pagamento exceder 60 dias.",
+        "D": "o prazo para pagamento pode ser estipulado em calendário próprio, desde que não ultrapasse 30 dias da apresentação da fatura.",
+        "E": "a fatura ou documento equivalente deve conter todos os elementos necessários à comprovação da prestação do serviço ou fornecimento."
+      },
+      "gabarito": "C",
+      "justificativa": {
+        "artigo": "Art. 113",
+        "texto_legal": "Art. 113. O prazo para pagamento pela administração pública, contado da apresentação da fatura ou de documento equivalente, será de até 30 (trinta) dias. § 1º O prazo de que trata o caput poderá ser estipulado em calendário próprio, desde que não ultrapasse 30 (trinta) dias da apresentação da fatura ou de documento equivalente. § 2º Descumprido o prazo de que trata o caput, a administração será compelida a pagar, além da correção monetária, juros legais. § 3º A fatura ou documento equivalente de que trata o caput deverá conter todos os elementos necessários à comprovação da prestação do serviço ou do fornecimento.",
+        "explicacao": "A alternativa C está incorreta porque a Lei 14.133/2021 não prevê expressamente a suspensão da execução do contrato por atraso no pagamento. O art. 113 estabelece o prazo de 30 dias e as consequências do descumprimento (correção monetária e juros), mas não autoriza a suspensão pelo contratado após 60 dias.",
+        "analise_distratores": {
+          "A": "Correta conforme art. 113, caput, que estabelece prazo máximo de 30 dias.",
+          "B": "Correta conforme art. 113, §2º, que prevê correção monetária e juros legais em caso de descumprimento.",
+          "C": "Incorreta pois a lei não prevê suspensão da execução por atraso no pagamento.",
+          "D": "Correta conforme art. 113, §1º, que permite calendário próprio desde que não ultrapasse 30 dias.",
+          "E": "Correta conforme art. 113, §3º, que exige elementos comprobatórios na fatura."
+        }
+      }
+    },
+    {
+      "id": "2",
+      "dificuldade": "Dificil",
+      "enunciado": "De acordo com a Lei 14.133/2021, assinale a alternativa que indica APENAS modalidades de licitação que podem ser realizadas por meio eletrônico:",
+      "alternativas": {
+        "A": "Pregão, Concorrência e Tomada de Preços.",
+        "B": "Convite, Concurso e Leilão.",
+        "C": "Diálogo Competitivo, Credenciamento e Tomada de Preços.",
+        "D": "Pregão, Convite e Credenciamento.",
+        "E": "Concorrência, Tomada de Preços e Convite."
+      },
+      "gabarito": "A",
+      "justificativa": {
+        "artigo": "Art. 6º, V e Arts. 37, 49, 60-62",
+        "texto_legal": "Art. 6º, V: 'a publicidade dos atos do processo licitatório será garantida preferencialmente por meio eletrônico, em sítio oficial da administração'. Art. 60: 'O pregão, na forma eletrônica ou presencial, será utilizado para a aquisição de bens e a contratação de serviços comuns'. Art. 49: 'A concorrência será utilizada para licitações de maior vulto'. Art. 37: 'A tomada de preços será utilizada para licitações de valor intermediário'.",
+        "explicacao": "A alternativa A está correta porque as modalidades Pregão (art. 60), Concorrência (art. 49) e Tomada de Preços (art. 37) são expressamente previstas na lei e podem ser realizadas por meio eletrônico, sendo o pregão inclusive previsto preferencialmente na forma eletrônica.",
+        "analise_distratores": {
+          "A": "Correta - Pregão, Concorrência e Tomada de Preços são modalidades que admitem realização eletrônica.",
+          "B": "Incorreta - Convite não é tipicamente realizado por meio eletrônico por envolver convite direto.",
+          "C": "Incorreta - Diálogo Competitivo e Credenciamento não são modalidades com previsão expressa de realização eletrônica preferencial.",
+          "D": "Incorreta - Convite e Credenciamento não são modalidades com previsão de realização preferencial por meio eletrônico.",
+          "E": "Incorreta - Convite não é modalidade tipicamente eletrônica."
+        }
+      }
+    },
+    {
+      "id": "3",
+      "dificuldade": "Medio",
+      "enunciado": "À luz da Lei 14.133/2021, é CORRETO afirmar sobre os princípios aplicáveis às licitações:",
+      "alternativas": {
+        "A": "O princípio da vinculação ao instrumento convocatório aplica-se apenas às licitações, não aos contratos.",
+        "B": "O princípio da publicidade exige que todos os atos do processo licitatório sejam divulgados em meio eletrônico oficial, independentemente de sigilo.",
+        "C": "O princípio da eficiência permite que a administração dispense licitação quando houver necessidade de contratação urgente.",
+        "D": "O princípio do julgamento objetivo não se aplica ao pregão, que é subjetivo pela disputa por lances.",
+        "E": "O princípio da moralidade exige que os agentes públicos ajam com ética, mas não se aplica aos licitantes."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 6º, V e §1º",
+        "texto_legal": "Art. 6º, V: 'a publicidade dos atos do processo licitatório será garantida preferencialmente por meio eletrônico, em sítio oficial da administração'. §1º: 'Os atos do processo licitatório serão públicos, salvo quando envolverem matéria sigilosa, nos termos da legislação'.",
+        "explicacao": "A alternativa B está correta porque o art. 6º, V estabelece que a publicidade será preferencialmente por meio eletrônico, e o §1º do mesmo artigo prevê que os atos serão públicos, salvo quando envolverem sigilo, confirmando a regra geral da publicidade.",
+        "analise_distratores": {
+          "A": "Incorreta - O princípio da vinculação aplica-se também aos contratos, conforme espírito da lei.",
+          "B": "Correta - Conforme art. 6º, V e §1º, a publicidade é regra geral, com exceção apenas para matéria sigilosa.",
+          "C": "Incorreta - A dispensa por urgência está prevista no art. 74, II, mas não é decorrência direta do princípio da eficiência.",
+          "D": "Incorreta - O pregão mantém critérios objetivos de julgamento, mesmo com disputa por lances.",
+          "E": "Incorreta - O princípio da moralidade aplica-se a todos os envolvidos no processo licitatório."
+        }
+      }
+    },
+    {
+      "id": "4",
+      "dificuldade": "Facil",
+      "enunciado": "Nos termos da Lei 14.133/2021, qual é o prazo mínimo para habilitação em licitação na modalidade Concorrência, contado da publicação do aviso de licitação?",
+      "alternativas": {
+        "A": "10 dias.",
+        "B": "15 dias.",
+        "C": "20 dias.",
+        "D": "30 dias.",
+        "E": "45 dias."
+      },
+      "gabarito": "D",
+      "justificativa": {
+        "artigo": "Art. 49, §1º",
+        "texto_legal": "Art. 49, §1º: 'O prazo mínimo para a habilitação na modalidade concorrência será de 30 (trinta) dias, contado da publicação do aviso de licitação'.",
+        "explicacao": "A alternativa D está correta porque o art. 49, §1º estabelece expressamente o prazo mínimo de 30 dias para habilitação na concorrência.",
+        "analise_distratores": {
+          "A": "Incorreta - 10 dias é inferior ao prazo legal mínimo.",
+          "B": "Incorreta - 15 dias não corresponde ao prazo estabelecido na lei.",
+          "C": "Incorreta - 20 dias não é o prazo mínimo legal.",
+          "D": "Correta - Conforme art. 49, §1º, o prazo mínimo é de 30 dias.",
+          "E": "Incorreta - 45 dias é superior ao prazo mínimo estabelecido."
+        }
+      }
+    },
+    {
+      "id": "5",
+      "dificuldade": "Dificil",
+      "enunciado": "De acordo com a Lei 14.133/2021, é possível a dispensa de licitação EXCETO:",
+      "alternativas": {
+        "A": "para contratação de artistas consagrados.",
+        "B": "para aquisição de materiais de uso rotineiro e contínuo.",
+        "C": "para obras e serviços de engenharia com valor até R$ 90.000,00.",
+        "D": "para contratação de serviços técnicos especializados.",
+        "E": "para contratação de organizações sociais quando previsto em lei."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 74",
+        "texto_legal": "Art. 74. É dispensável a licitação: I - para obras e serviços de engenharia com valor até R$ 90.000,00 (noventa mil reais); XX - para a contratação de artista de reconhecida qualificação ou de notória especialização; XXV - para a contratação de serviços técnicos especializados, mediante justificativa fundamentada; XXVII - para a contratação de organizações sociais, quando previsto em lei.",
+        "explicacao": "A alternativa B está incorreta porque a aquisição de materiais de uso rotineiro e contínuo não está entre as hipóteses de dispensa previstas no art. 74 da Lei 14.133/2021.",
+        "analise_distratores": {
+          "A": "Correta - Art. 74, XX permite dispensa para artistas consagrados.",
+          "B": "Incorreta - Aquisição de materiais de uso rotineiro não é causa de dispensa prevista na lei.",
+          "C": "Correta - Art. 74, I permite dispensa para obras e serviços até R$ 90.000,00.",
+          "D": "Correta - Art. 74, XXV permite dispensa para serviços técnicos especializados.",
+          "E": "Correta - Art. 74, XXVII permite dispensa para organizações sociais quando previsto em lei."
+        }
+      }
+    },
+    {
+      "id": "6",
+      "dificuldade": "Medio",
+      "enunciado": "Sobre as sanções administrativas aplicáveis aos licitantes e contratados, segundo a Lei 14.133/2021, é INCORRETO afirmar:",
+      "alternativas": {
+        "A": "A suspensão temporária da participação em licitação não pode exceder o prazo de 2 anos.",
+        "B": "A declaração de inidoneidade impede a participação em licitações enquanto persistirem os motivos que a determinaram.",
+        "C": "A aplicação de sanção administrativa depende de processo administrativo em que se assegurem o contraditório e a ampla defesa.",
+        "D": "A multa por inexecução total ou parcial do contrato não pode exceder o valor do contrato.",
+        "E": "A advertência é a sanção aplicável para irregularidades leves."
+      },
+      "gabarito": "D",
+      "justificativa": {
+        "artigo": "Art. 171",
+        "texto_legal": "Art. 171. A sanção administrativa será aplicada após processo administrativo em que se assegurem o contraditório e a ampla defesa. § 1º A suspensão temporária de que trata o inciso II do caput não poderá exceder o prazo de 2 (dois) anos. § 2º A declaração de inidoneidade de que trata o inciso III do caput impedirá a participação do licitante ou do contratado em licitação ou celebração de contrato com a administração pública enquanto persistirem os motivos que a determinaram.",
+        "explicacao": "A alternativa D está incorreta porque a Lei 14.133/2021 não estabelece um limite máximo para a multa por inexecução contratual. O art. 171 trata das sanções, mas não fixa o limite mencionado.",
+        "analise_distratores": {
+          "A": "Correta - Art. 171, §1º estabelece que a suspensão não pode exceder 2 anos.",
+          "B": "Correta - Art. 171, §2º estabelece que a inidoneidade persiste enquanto existirem os motivos.",
+          "C": "Correta - Art. 171, caput exige processo administrativo com contraditório e ampla defesa.",
+          "D": "Incorreta - A lei não estabelece limite máximo para multa por inexecução contratual.",
+          "E": "Correta - Art. 171, III prevê a advertência para irregularidades leves."
+        }
+      }
+    },
+    {
+      "id": "7",
+      "dificuldade": "Facil",
+      "enunciado": "Nos termos da Lei 14.133/2021, assinale a alternativa que define corretamente o regime de execução indireta de obras e serviços:",
+      "alternativas": {
+        "A": "Execução por servidores públicos.",
+        "B": "Execução por empresa pública ou sociedade de economia mista.",
+        "C": "Execução por meio de contrato de concessão.",
+        "D": "Execução por meio de contrato de terceirização.",
+        "E": "Execução por cooperativas de trabalho."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 6º, XXIV",
+        "texto_legal": "Art. 6º, XXIV: 'execução indireta: a realizada por empresa pública, sociedade de economia mista ou outras entidades controladas direta ou indiretamente pela administração pública'.",
+        "explicacao": "A alternativa B está correta porque reproduz literalmente a definição de execução indireta contida no art. 6º, XXIV da Lei 14.133/2021.",
+        "analise_distratores": {
+          "A": "Incorreta - Execução por servidores caracteriza execução direta.",
+          "B": "Correta - Conforme definição do art. 6º, XXIV.",
+          "C": "Incorreta - Concessão é modalidade de parceria, não se enquadra na definição de execução indireta.",
+          "D": "Incorreta - Terceirização é forma de contratação, não execução indireta nos termos da lei.",
+          "E": "Incorreta - Cooperativas não são necessariamente controladas pela administração pública."
+        }
+      }
+    },
+    {
+      "id": "8",
+      "dificuldade": "Medio",
+      "enunciado": "À luz da Lei 14.133/2021, sobre o pregão, é CORRETO afirmar:",
+      "alternativas": {
+        "A": "A habilitação ocorre antes da disputa por lances.",
+        "B": "É vedada a realização de pregão para contratação de serviços comuns.",
+        "C": "O critério de julgamento obrigatório é o de menor preço.",
+        "D": "A habilitação ocorre após a disputa por lances.",
+        "E": "O pregão só pode ser realizado na forma presencial."
+      },
+      "gabarito": "D",
+      "justificativa": {
+        "artigo": "Art. 60, §1º",
+        "texto_legal": "Art. 60, §1º: 'No pregão, a habilitação dos licitantes ocorrerá após a fase de disputa por lances'.",
+        "explicacao": "A alternativa D está correta porque o art. 60, §1º estabelece expressamente que a habilitação no pregão ocorre após a fase de disputa por lances.",
+        "analise_distratores": {
+          "A": "Incorreta - A habilitação ocorre após a disputa, não antes.",
+          "B": "Incorreta - O pregão é justamente destinado a bens e serviços comuns.",
+          "C": "Incorreta - O pregão pode adotar diversos critérios de julgamento, não apenas menor preço.",
+          "D": "Correta - Conforme art. 60, §1º, a habilitação é posterior à disputa.",
+          "E": "Incorreta - O pregão pode ser eletrônico ou presencial."
+        }
+      }
+    },
+    {
+      "id": "9",
+      "dificuldade": "Facil",
+      "enunciado": "De acordo com a Lei 14.133/2021, o prazo de validade das propostas em licitação na modalidade Concorrência é de, no mínimo:",
+      "alternativas": {
+        "A": "30 dias.",
+        "B": "60 dias.",
+        "C": "90 dias.",
+        "D": "120 dias.",
+        "E": "180 dias."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 49, §2º",
+        "texto_legal": "Art. 49, §2º: 'O prazo de validade das propostas, na modalidade concorrência, será de, no mínimo, 60 (sessenta) dias, contados da data de recebimento das propostas'.",
+        "explicacao": "A alternativa B está correta porque o art. 49, §2º estabelece expressamente o prazo mínimo de 60 dias para validade das propostas na concorrência.",
+        "analise_distratores": {
+          "A": "Incorreta - 30 dias é inferior ao mínimo legal.",
+          "B": "Correta - Conforme art. 49, §2º, o prazo mínimo é de 60 dias.",
+          "C": "Incorreta - 90 dias é superior ao mínimo, mas não é o mínimo estabelecido.",
+          "D": "Incorreta - 120 dias é superior ao mínimo legal.",
+          "E": "Incorreta - 180 dias é superior ao mínimo estabelecido na lei."
+        }
+      }
+    },
+    {
+      "id": "10",
+      "dificuldade": "Medio",
+      "enunciado": "Sobre as formas de extinção dos contratos administrativos na Lei 14.133/2021, é INCORRETO afirmar:",
+      "alternativas": {
+        "A": "O término normal ocorre com o cumprimento integral das obrigações pelas partes.",
+        "B": "A rescisão administrativa independe de notificação prévia ao contratado.",
+        "C": "A rescisão judicial pode ser decretada por iniciativa do contratado.",
+        "D": "A rescisão amigável exige justificativa fundamentada pela administração.",
+        "E": "A rescisão por descumprimento do contrato pelo contratado pode ser feita pela administração."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 162",
+        "texto_legal": "Art. 162. O contrato extinguir-se-á por: I - término normal; II - rescisão; III - anulação; IV - resolução. Parágrafo único. A rescisão de que trata o inciso II poderá ser: I - administrativa; II - judicial; III - amigável.",
+        "explicacao": "A alternativa B está incorreta porque a rescisão administrativa, como ato administrativo que é, deve observar o devido processo legal, o que inclui a notificação prévia do contratado para exercício do contraditório e ampla defesa.",
+        "analise_distratores": {
+          "A": "Correta - O término normal decorre do cumprimento integral do contrato.",
+          "B": "Incorreta - A rescisão administrativa exige observância do devido processo legal, incluindo notificação.",
+          "C": "Correta - A rescisão judicial pode ser proposta por qualquer das partes.",
+          "D": "Correta - A rescisão amigável exige justificativa fundamentada pela administração.",
+          "E": "Correta - A administração pode rescindir por descumprimento do contratado."
+        }
+      }
+    }
+  ]
+}

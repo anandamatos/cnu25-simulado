@@ -1,0 +1,171 @@
+const express = require('express');
+const sqlite3 = require('sqlite3').verbose();
+const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+const net = require('net');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Servir arquivos estáticos do frontend
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Conectar ao banco
+const db = new sqlite3.Database('./questions.db');
+
+// ... (suas APIs existentes) ...
+
+// API para performance data
+app.get('/api/performance', (req, res) => {
+    db.all(`SELECT * FROM performance_data WHERE user_id = 1`, (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        
+        const formattedData = rows.map(row => ({
+            ...row,
+            scores: JSON.parse(row.scores)
+        }));
+        
+        res.json(formattedData);
+    });
+});
+
+app.post('/api/performance', (req, res) => {
+    const { key, scores, eixo, tema, subtema, grupo } = req.body;
+    
+    const query = `INSERT OR REPLACE INTO performance_data 
+                   (user_id, key, scores, eixo, tema, subtema, grupo) 
+                   VALUES (1, ?, ?, ?, ?, ?, ?)`;
+    
+    db.run(query, [key, JSON.stringify(scores), eixo, tema, subtema, grupo], function(err) {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ id: this.lastID });
+    });
+});
+
+// API para estatísticas do dashboard
+app.get('/api/dashboard/stats', (req, res) => {
+    db.all(`SELECT * FROM performance_data WHERE user_id = 1`, (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        
+        const allScores = rows.flatMap(row => JSON.parse(row.scores));
+        const mediaGeral = allScores.length > 0 ? 
+            allScores.reduce((a, b) => a + b, 0) / allScores.length : 0;
+        
+        const totalTestes = allScores.length;
+        
+        res.json({
+            mediaGeral: Math.round(mediaGeral * 100) / 100,
+            totalTestes: totalTestes,
+            meta: 85
+        });
+    });
+});
+
+// API para questões
+app.get('/api/questoes', (req, res) => {
+    const questionsPath = path.join(__dirname, 'questions.json');
+    
+    if (!fs.existsSync(questionsPath)) {
+        return res.status(404).json({ error: 'Arquivo de questões não encontrado' });
+    }
+    
+    fs.readFile(questionsPath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: 'Erro ao carregar questões' });
+        }
+        
+        try {
+            const questoesData = JSON.parse(data);
+            res.json(questoesData.questoes || []);
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao processar questões' });
+        }
+    });
+});
+// API para obter eixos disponíveis
+app.get('/api/eixos', (req, res) => {
+    const questionsPath = path.join(__dirname, 'questions.json');
+    if (!fs.existsSync(questionsPath)) return res.json([]);
+    
+    fs.readFile(questionsPath, 'utf8', (err, data) => {
+        if (err) return res.json([]);
+        try {
+            const questoesData = JSON.parse(data);
+            const questaoFiltradas = questoesData.questoes || [];
+            const eixos = [...new Set(questaoFiltradas.filter(q => q.eixo).map(q => q.eixo))];
+            res.json(eixos);
+        } catch (error) {
+            res.json([]);
+        }
+    });
+});
+
+// API para obter temas por eixo
+app.get('/api/temas', (req, res) => {
+    const { eixo } = req.query;
+    const questionsPath = path.join(__dirname, 'questions.json');
+    if (!fs.existsSync(questionsPath)) return res.json([]);
+    
+    fs.readFile(questionsPath, 'utf8', (err, data) => {
+        if (err) return res.json([]);
+        try {
+            const questoesData = JSON.parse(data);
+            let questaoFiltradas = questoesData.questoes || [];
+            if (eixo && eixo !== 'todos') {
+                questaoFiltradas = questaoFiltradas.filter(q => q.eixo === eixo);
+            }
+            const temas = [...new Set(questaoFiltradas.filter(q => q.tema).map(q => q.tema))];
+            res.json(temas);
+        } catch (error) {
+            res.json([]);
+        }
+    });
+});
+
+// API para questões filtradas por eixo e tema
+app.get('/api/questoes-filtradas', (req, res) => {
+    const { eixo, tema, quantidade = 10 } = req.query;
+    const questionsPath = path.join(__dirname, 'questions.json');
+    if (!fs.existsSync(questionsPath)) return res.json([]);
+    
+    fs.readFile(questionsPath, 'utf8', (err, data) => {
+        if (err) return res.json([]);
+        try {
+            const questoesData = JSON.parse(data);
+            let questaoFiltradas = questoesData.questoes || [];
+            
+            if (eixo && eixo !== 'todos') {
+                questaoFiltradas = questaoFiltradas.filter(q => q.eixo === eixo);
+            }
+            if (tema && tema !== 'todos') {
+                questaoFiltradas = questaoFiltradas.filter(q => q.tema === tema);
+            }
+            
+            questaoFiltradas = questaoFiltradas.sort(() => Math.random() - 0.5);
+            questaoFiltradas = questaoFiltradas.slice(0, parseInt(quantidade));
+            
+            res.json(questaoFiltradas);
+        } catch (error) {
+            res.json([]);
+        }
+    });
+});
+# Adicione o app.listen no final
+cat >> server.js << 'EOF'
+
+// Iniciar servidor
+app.listen(3000, () => {
+    console.log('🚀 Servidor rodando na porta 3000');
+    console.log('📊 Dashboard: http://localhost:3000/dashboard.html');
+    console.log('📝 Simulados: http://localhost:3000/index.html');
+    console.log('🔧 APIs: http://localhost:3000/api/questoes');
+});
+EOF

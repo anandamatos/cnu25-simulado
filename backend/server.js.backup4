@@ -1,0 +1,327 @@
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+
+const app = express();
+
+// Configurações básicas
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Log de todas as requisições
+app.use((req, res, next) => {
+    console.log(`📨 ${req.method} ${req.url}`);
+    next();
+});
+
+// ROTA DE TESTE
+app.get('/api/test', (req, res) => {
+    res.json({ message: 'API está funcionando!', timestamp: new Date().toISOString() });
+});
+
+// API para questões
+app.get('/api/questoes', (req, res) => {
+    try {
+        const questionsPath = path.join(__dirname, 'questions.json');
+        console.log('📁 Buscando questões em:', questionsPath);
+        
+        if (!fs.existsSync(questionsPath)) {
+            console.log('❌ Arquivo questions.json não encontrado');
+            return res.json([]);
+        }
+        
+        const data = fs.readFileSync(questionsPath, 'utf8');
+        const questoesData = JSON.parse(data);
+        console.log(`✅ Encontradas ${(questoesData.questoes || []).length} questões`);
+        res.json(questoesData.questoes || []);
+    } catch (error) {
+        console.error('❌ Erro ao carregar questões:', error);
+        res.json([]);
+    }
+});
+
+// API para eixos
+app.get('/api/eixos', (req, res) => {
+    try {
+        const questionsPath = path.join(__dirname, 'questions.json');
+        if (!fs.existsSync(questionsPath)) return res.json([]);
+        
+        const data = fs.readFileSync(questionsPath, 'utf8');
+        const questoesData = JSON.parse(data);
+        const questaoFiltradas = questoesData.questoes || [];
+        const eixos = [...new Set(questaoFiltradas.filter(q => q.eixo).map(q => q.eixo))];
+        
+        console.log(`✅ Eixos encontrados: ${eixos.length}`);
+        res.json(eixos);
+    } catch (error) {
+        console.error('❌ Erro ao carregar eixos:', error);
+        res.json([]);
+    }
+});
+
+// API para temas
+app.get('/api/temas', (req, res) => {
+    try {
+        const { eixo } = req.query;
+        const questionsPath = path.join(__dirname, 'questions.json');
+        if (!fs.existsSync(questionsPath)) return res.json([]);
+        
+        const data = fs.readFileSync(questionsPath, 'utf8');
+        const questoesData = JSON.parse(data);
+        let questaoFiltradas = questoesData.questoes || [];
+        
+        if (eixo && eixo !== 'todos') {
+            questaoFiltradas = questaoFiltradas.filter(q => q.eixo === eixo);
+        }
+        
+        const temas = [...new Set(questaoFiltradas.filter(q => q.tema).map(q => q.tema))];
+        console.log(`✅ Temas encontrados para ${eixo}: ${temas.length}`);
+        res.json(temas);
+    } catch (error) {
+        console.error('❌ Erro ao carregar temas:', error);
+        res.json([]);
+    }
+});
+
+// ROTA PROVA-QUESTIONS - ATUALIZADA PARA SUA ESTRUTURA
+app.get('/api/prova-questions', (req, res) => {
+    try {
+        const { tipo, categoria, subcategoria, numQuestions } = req.query;
+        const questionsPath = path.join(__dirname, 'questions.json');
+        
+        console.log('🎯 ROTA /api/prova-questions ACESSADA!');
+        console.log('📝 Parâmetros:', { tipo, categoria, subcategoria, numQuestions });
+        
+        if (!fs.existsSync(questionsPath)) {
+            console.log('❌ Arquivo questions.json não encontrado');
+            return res.json([]);
+        }
+        
+        const data = fs.readFileSync(questionsPath, 'utf8');
+        const questoesData = JSON.parse(data);
+        let questaoFiltradas = questoesData.questoes || [];
+        
+        console.log(`📚 Total de questões: ${questaoFiltradas.length}`);
+        
+        // Como suas questões não têm campo "tipo", vamos definir baseado no eixo
+        // Vamos considerar: Eixo 4 = específicos, outros = gerais (ou ajuste conforme sua necessidade)
+        if (tipo === 'gerais') {
+            // Para gerais, vamos pegar questões que NÃO são do Eixo 4
+            questaoFiltradas = questaoFiltradas.filter(q => q.eixo !== 'Eixo 4');
+            console.log(`📚 Questões gerais após filtro: ${questaoFiltradas.length}`);
+            
+            if (categoria && categoria !== 'completa') {
+                questaoFiltradas = questaoFiltradas.filter(q => q.tema === categoria);
+                console.log(`📚 Após filtrar por tema "${categoria}": ${questaoFiltradas.length}`);
+            }
+            
+        } else if (tipo === 'especificos') {
+            // Para específicos, vamos pegar apenas questões do Eixo 4
+            questaoFiltradas = questaoFiltradas.filter(q => q.eixo === 'Eixo 4');
+            console.log(`📚 Questões específicas após filtro: ${questaoFiltradas.length}`);
+            
+            if (categoria && categoria !== 'completa') {
+                questaoFiltradas = questaoFiltradas.filter(q => q.eixo === categoria);
+                console.log(`📚 Após filtrar por eixo "${categoria}": ${questaoFiltradas.length}`);
+                
+                if (subcategoria && subcategoria !== 'completa') {
+                    questaoFiltradas = questaoFiltradas.filter(q => q.tema === subcategoria);
+                    console.log(`📚 Após filtrar por matéria "${subcategoria}": ${questaoFiltradas.length}`);
+                }
+            }
+            
+        } else if (tipo === 'objetiva') {
+            // Prova objetiva completa - pegar todas as questões
+            console.log(`📚 Prova objetiva completa: ${questaoFiltradas.length}`);
+        }
+        
+        // Embaralhar questões
+        questaoFiltradas = questaoFiltradas.sort(() => Math.random() - 0.5);
+        
+        // Limitar pelo número de questões solicitado
+        let numQuestoes;
+        if (numQuestions) {
+            numQuestoes = parseInt(numQuestions);
+        } else {
+            // Valores padrão baseados no tipo
+            if (tipo === 'objetiva') numQuestoes = 90;
+            else if (tipo === 'gerais') numQuestoes = 30;
+            else numQuestoes = 60;
+        }
+        
+        questaoFiltradas = questaoFiltradas.slice(0, numQuestoes);
+        
+        console.log(`✅ Retornando ${questaoFiltradas.length} questões`);
+        
+        // Transformar para o formato esperado pelo frontend
+        const questoesFormatadas = questaoFiltradas.map((questao, index) => {
+            return {
+                id: questao.id || index + 1,
+                enunciado: questao.enunciado,
+                alternativas: questao.alternativas || [],
+                correct_option: questao.resposta_correta, // Sua estrutura usa resposta_correta
+                explicacao: questao.explicacao,
+                eixo: questao.eixo,
+                tema: questao.tema,
+                subtema: questao.subtema,
+                dificuldade: questao.dificuldade
+            };
+        });
+        
+        // Log das primeiras 2 questões para debug
+        if (questoesFormatadas.length > 0) {
+            console.log('🔍 Primeira questão formatada:', {
+                id: questoesFormatadas[0].id,
+                enunciado: questoesFormatadas[0].enunciado?.substring(0, 50) + '...',
+                alternativas: questoesFormatadas[0].alternativas?.length,
+                correct_option: questoesFormatadas[0].correct_option,
+                eixo: questoesFormatadas[0].eixo,
+                tema: questoesFormatadas[0].tema
+            });
+        }
+        
+        res.json(questoesFormatadas);
+        
+    } catch (error) {
+        console.error('❌ Erro:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// API para dados de performance
+app.get('/api/performance', (req, res) => {
+    try {
+        const performanceDataPath = path.join(__dirname, 'data', 'performance-data.json');
+        
+        if (!fs.existsSync(performanceDataPath)) {
+            console.log('📊 Criando arquivo performance-data.json padrão...');
+            const defaultData = {
+                performanceData: [
+                    {
+                        "key": "dispensa-1a10",
+                        "eixo": "Eixo Contratos", 
+                        "tema": "Contratos - Dispensa",
+                        "subtema": "Dispensa Art. 75 I a X",
+                        "grupo": "especificos",
+                        "scores": [20, 50, 90, 100, 100, 100, 100, 100]
+                    },
+                    {
+                        "key": "portugues-acento",
+                        "eixo": "Eixo Gerais",
+                        "tema": "Português",
+                        "subtema": "Acentuação Gráfica", 
+                        "grupo": "gerais",
+                        "scores": [90, 80, 85]
+                    }
+                ]
+            };
+            fs.writeFileSync(performanceDataPath, JSON.stringify(defaultData, null, 2));
+            return res.json(defaultData.performanceData);
+        }
+        
+        const performanceData = JSON.parse(fs.readFileSync(performanceDataPath, 'utf8'));
+        console.log(`📊 Carregando ${performanceData.performanceData.length} itens de performance`);
+        res.json(performanceData.performanceData);
+    } catch (error) {
+        console.error('❌ Erro ao carregar dados de performance:', error);
+        res.status(500).json({ error: 'Erro ao carregar dados de performance' });
+    }
+});
+
+// API para estatísticas do dashboard
+app.get('/api/dashboard/stats', (req, res) => {
+    try {
+        const performanceDataPath = path.join(__dirname, 'data', 'performance-data.json');
+        
+        if (!fs.existsSync(performanceDataPath)) {
+            return res.json({
+                mediaGeral: 0,
+                totalTestes: 0,
+                meta: 85
+            });
+        }
+        
+        const performanceData = JSON.parse(fs.readFileSync(performanceDataPath, 'utf8'));
+        const data = performanceData.performanceData || [];
+
+        const totalTestes = data.reduce((total, item) => total + (item.scores?.length || 0), 0);
+        const todosScores = data.flatMap(item => item.scores || []);
+        const mediaGeral = todosScores.length > 0 
+            ? todosScores.reduce((sum, score) => sum + score, 0) / todosScores.length
+            : 0;
+
+        res.json({
+            mediaGeral: parseFloat(mediaGeral.toFixed(2)),
+            totalTestes: totalTestes,
+            meta: 85
+        });
+    } catch (error) {
+        console.error('❌ Erro ao calcular estatísticas:', error);
+        res.status(500).json({ error: 'Erro ao calcular estatísticas' });
+    }
+});
+
+// API para salvar novo teste no dashboard
+app.post('/api/performance', (req, res) => {
+    try {
+        const { key, scores, eixo, tema, subtema, grupo } = req.body;
+        
+        console.log('💾 Salvando novo teste:', { key, scores, eixo, tema, subtema, grupo });
+        
+        const performanceDataPath = path.join(__dirname, 'data', 'performance-data.json');
+        let performanceData;
+        
+        if (fs.existsSync(performanceDataPath)) {
+            performanceData = JSON.parse(fs.readFileSync(performanceDataPath, 'utf8'));
+        } else {
+            performanceData = { performanceData: [] };
+        }
+        
+        const itemIndex = performanceData.performanceData.findIndex(item => item.key === key);
+        
+        if (itemIndex !== -1) {
+            performanceData.performanceData[itemIndex].scores = [
+                ...performanceData.performanceData[itemIndex].scores,
+                ...scores
+            ];
+            console.log(`✅ Atualizado item existente: ${key}`);
+        } else {
+            performanceData.performanceData.push({
+                key,
+                eixo,
+                tema, 
+                subtema,
+                grupo,
+                scores
+            });
+            console.log(`✅ Criado novo item: ${key}`);
+        }
+        
+        fs.writeFileSync(performanceDataPath, JSON.stringify(performanceData, null, 2));
+        
+        res.json({ success: true, message: 'Dados atualizados com sucesso' });
+        
+    } catch (error) {
+        console.error('❌ Erro ao salvar dados:', error);
+        res.status(500).json({ error: 'Erro ao salvar dados' });
+    }
+});
+
+// Rotas para servir o frontend
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+app.get('/dashboard.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dashboard.html'));
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log('🚀 Servidor rodando na porta 3000');
+    console.log('📝 Simulados: http://localhost:3000/');
+    console.log('📊 Dashboard: http://localhost:3000/dashboard.html');
+    console.log('🔧 Todas as rotas disponíveis!');
+});

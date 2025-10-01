@@ -1,0 +1,26 @@
+[
+  {
+    "key": "modalidades-dispensa-1a10",
+    "eixo": "Eixo 4 - Licitações e LRF",
+    "tema": "Lei 14.133/2021",
+    "subtema": "Modalidades & Dispensa: 1 a 10",
+    "grupo": "especificos",
+    "scores": [20, 50, 90, 100, 100, 100, 100, 100]
+  },
+  {
+    "key": "modalidades-dispensa-11a20",
+    "eixo": "Eixo 4 - Licitações e LRF",
+    "tema": "Lei 14.133/2021",
+    "subtema": "Modalidades & Dispensa: 11 a 20",
+    "grupo": "especificos",
+    "scores": [50, 100, 100, 100, 100]
+  },
+  {
+    "key": "modalidades-dispensa-21a40",
+    "eixo": "Eixo 4 - Licitações e LRF",
+    "tema": "Lei 14.133/2021",
+    "subtema": "Modalidades & Dispensa: 21 a 40",
+    "grupo": "especificos",
+    "scores": [80]
+  }
+]
