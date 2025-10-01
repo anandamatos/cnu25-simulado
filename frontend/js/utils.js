@@ -25,34 +25,3 @@ export const gerarKeyUnica = (texto) => {
         .replace(/[^a-z0-9-]/g, '')
         .substring(0, 50);
 };
-
-export const validarFormulario = (subtemaKey, nota, data) => {
-    const erros = [];
-    
-    if (!subtemaKey) erros.push('Selecione um subtema!');
-    if (isNaN(nota) || nota < 0 || nota > 100) erros.push('Nota deve ser um número entre 0 e 100!');
-    if (!data) erros.push('Selecione uma data!');
-    
-    return erros;
-};
-
-// Storage helpers
-export const salvarLocalmente = (chave, dados) => {
-    try {
-        localStorage.setItem(chave, JSON.stringify(dados));
-        return true;
-    } catch (error) {
-        console.error('Erro ao salvar localmente:', error);
-        return false;
-    }
-};
-
-export const carregarLocalmente = (chave) => {
-    try {
-        const dados = localStorage.getItem(chave);
-        return dados ? JSON.parse(dados) : null;
-    } catch (error) {
-        console.error('Erro ao carregar localmente:', error);
-        return null;
-    }
-};

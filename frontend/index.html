@@ -6,14 +6,20 @@
     <title>Simulado CNU25</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .quiz-option { transition: all 0.2s ease-in-out; }
+        .quiz-option:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .quiz-option.selected { background-color: #3b82f6; color: white; border-color: #2563eb; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen p-4">
     <div id="app" class="max-w-4xl mx-auto">
         <!-- Conteúdo renderizado via JavaScript -->
     </div>
 
-    <!-- Componentes -->
     <script type="module" src="js/app.js"></script>
 </body>
 </html>
