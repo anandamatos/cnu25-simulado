@@ -1,0 +1,264 @@
+{
+  "sessao_id": "Lei14133-2021-Modalidades-Dispensa-002",
+  "tema": "Questões Lei 14.133/2021 (modalidades, dispensa)",
+  "base_legal": "Lei 14133/2021",
+  "dispositivos_foco": "Art. 15, Art. 20, Art. 48, Art. 74, Art. 85, Art. 125, Art. 133, Art. 149, Art. 152, Art. 171",
+  "total_questoes": 10,
+  "distribuicao_dificuldade": {
+    "facil": "30%",
+    "medio": "50%",
+    "dificil": "20%"
+  },
+  "questoes": [
+    {
+      "id": "11",
+      "dificuldade": "Facil",
+      "enunciado": "De acordo com a Lei 14.133/2021, o valor máximo para dispensa de licitação na contratação de obras e serviços de engenharia é:",
+      "alternativas": {
+        "A": "R$ 50.000,00.",
+        "B": "R$ 90.000,00.",
+        "C": "R$ 150.000,00.",
+        "D": "R$ 200.000,00.",
+        "E": "R$ 250.000,00."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 74, I",
+        "texto_legal": "Art. 74. É dispensável a licitação: I - para obras e serviços de engenharia, desde que o valor estimado seja igual ou inferior a R$ 90.000,00 (noventa mil reais);",
+        "explicacao": "A alternativa B está correta porque o art. 74, I estabelece expressamente o valor de R$ 90.000,00 como limite para dispensa de licitação em obras e serviços de engenharia.",
+        "analise_distratores": {
+          "A": "Incorreta - R$ 50.000,00 é inferior ao valor legal estabelecido no art. 74, I.",
+          "B": "Correta - Valor exato previsto no art. 74, I da lei.",
+          "C": "Incorreta - R$ 150.000,00 é superior ao valor legal permitido para dispensa.",
+          "D": "Incorreta - R$ 200.000,00 não corresponde ao limite legal.",
+          "E": "Incorreta - R$ 250.000,00 está acima do valor máximo permitido para dispensa."
+        }
+      }
+    },
+    {
+      "id": "12",
+      "dificuldade": "Medio",
+      "enunciado": "Sobre o regime diferenciado de contratações (RDC) previsto na Lei 14.133/2021, é CORRETO afirmar:",
+      "alternativas": {
+        "A": "Aplica-se apenas à União.",
+        "B": "Pode ser adotado para eventos esportivos de grande porte.",
+        "C": "Dispensa a necessidade de planejamento prévio.",
+        "D": "Permite a contratação direta sem qualquer formalidade.",
+        "E": "É obrigatório para obras de infraestrutura."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 85",
+        "texto_legal": "Art. 85. O regime diferenciado de contratações públicas - RDC poderá ser adotado pela administração pública para a realização de jogos olímpicos, paraolímpicos, copa do mundo de futebol e outros eventos de grande repercussão, desde que previsto em lei específica.",
+        "explicacao": "A alternativa B está correta porque o art. 85 expressamente prevê a adoção do RDC para eventos de grande repercussão, incluindo eventos esportivos.",
+        "analise_distratores": {
+          "A": "Incorreta - O RDC pode ser adotado por qualquer ente da federação, conforme previsto no art. 85.",
+          "B": "Correta - Conforme disposição expressa do art. 85.",
+          "C": "Incorreta - O RDC não dispensa o planejamento, apenas estabelece regras específicas para as contratações.",
+          "D": "Incorreta - O RDC mantém formalidades próprias, não permitindo contratação direta sem procedimentos.",
+          "E": "Incorreta - O RDC é facultativo, não obrigatório, conforme a redação 'poderá ser adotado'."
+        }
+      }
+    },
+    {
+      "id": "13",
+      "dificuldade": "Facil",
+      "enunciado": "Nos termos da Lei 14.133/2021, o prazo para interposição de recurso contra o resultado preliminar da habilitação é de:",
+      "alternativas": {
+        "A": "3 dias úteis.",
+        "B": "5 dias úteis.",
+        "C": "8 dias úteis.",
+        "D": "10 dias úteis.",
+        "E": "15 dias úteis."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 125, §1º",
+        "texto_legal": "Art. 125, §1º: O recurso contra o resultado preliminar da habilitação será interposto no prazo de 5 (cinco) dias úteis, contados da divulgação do resultado.",
+        "explicacao": "A alternativa B está correta porque o art. 125, §1º estabelece expressamente o prazo de 5 dias úteis para interposição de recurso contra resultado preliminar de habilitação.",
+        "analise_distratores": {
+          "A": "Incorreta - 3 dias é inferior ao prazo legal estabelecido.",
+          "B": "Correta - Prazo exato previsto no art. 125, §1º.",
+          "C": "Incorreta - 8 dias não corresponde ao prazo legal.",
+          "D": "Incorreta - 10 dias é superior ao prazo estabelecido na lei.",
+          "E": "Incorreta - 15 dias ultrapassa o prazo legal previsto."
+        }
+      }
+    },
+    {
+      "id": "14",
+      "dificuldade": "Dificil",
+      "enunciado": "À luz da Lei 14.133/2021, sobre a contratação integrada, é INCORRETO afirmar:",
+      "alternativas": {
+        "A": "Permite a contratação única do projeto e da execução.",
+        "B": "Exige licitação na modalidade concorrência.",
+        "C": "Pode ser utilizada para obras e serviços de engenharia.",
+        "D": "O projeto básico é elaborado pelo contratado.",
+        "E": "A administração deve definir os parâmetros do objeto."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 15, §3º",
+        "texto_legal": "Art. 15, §3º: A contratação integrada consiste na contratação global que abranja, em um único contrato, a elaboração do projeto e a execução da obra ou do serviço, observados os parâmetros estabelecidos pela administração.",
+        "explicacao": "A alternativa B está incorreta porque a contratação integrada não exige necessariamente a modalidade concorrência. A lei não vincula esta forma de contratação a uma modalidade específica, podendo ser utilizada a modalidade mais adequada ao objeto.",
+        "analise_distratores": {
+          "A": "Correta - A contratação integrada abrange projeto e execução em único contrato, conforme art. 15, §3º.",
+          "B": "Incorreta - Não há exigência legal de que seja apenas por concorrência.",
+          "C": "Correta - A contratação integrada aplica-se a obras e serviços de engenharia.",
+          "D": "Correta - Na contratação integrada, o projeto é desenvolvido pelo contratado.",
+          "E": "Correta - A administração estabelece os parâmetros, conforme art. 15, §3º."
+        }
+      }
+    },
+    {
+      "id": "15",
+      "dificuldade": "Medio",
+      "enunciado": "De acordo com a Lei 14.133/2021, é possível a alteração unilateral do contrato pela administração APENAS:",
+      "alternativas": {
+        "A": "para reduzir o valor do contrato em até 10%.",
+        "B": "para aumentar o prazo de execução sem justificativa.",
+        "C": "para modificar o objeto do contrato.",
+        "D": "para adequar o contrato a superveniências legais.",
+        "E": "para alterar o regime de execução de direta para indireta."
+      },
+      "gabarito": "D",
+      "justificativa": {
+        "artigo": "Art. 149, I",
+        "texto_legal": "Art. 149. A administração poderá, unilateralmente, alterar o contrato: I - para adequá-lo a superveniências legais ou regulamentares;",
+        "explicacao": "A alternativa D está correta porque o art. 149, I permite expressamente a alteração unilateral apenas para adequação a superveniências legais ou regulamentares.",
+        "analise_distratores": {
+          "A": "Incorreta - A redução do valor não é hipótese de alteração unilateral prevista no art. 149.",
+          "B": "Incorreta - O aumento de prazo exige justificativa e acordo entre as partes.",
+          "C": "Incorreta - A modificação do objeto não é permitida unilateralmente pela administração.",
+          "D": "Correta - Única hipótese de alteração unilateral expressamente prevista no art. 149, I.",
+          "E": "Incorreta - A alteração do regime de execução não consta como hipótese de alteração unilateral."
+        }
+      }
+    },
+    {
+      "id": "16",
+      "dificuldade": "Medio",
+      "enunciado": "Sobre o sistema de registro de preços na Lei 14.133/2021, é CORRETO afirmar:",
+      "alternativas": {
+        "A": "A ata de registro de preços tem validade máxima de 1 ano.",
+        "B": "Pode ser prorrogado por igual período.",
+        "C": "As adesões são realizadas por meio de convite.",
+        "D": "O registro vincula todos os órgãos da mesma esfera de governo.",
+        "E": "A ata é celebrada apenas com o licitante vencedor."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 20, §1º",
+        "texto_legal": "Art. 20, §1º: A ata de registro de preços terá validade de até 12 (doze) meses, podendo ser prorrogada por igual período, desde que mantidas as condições inicialmente pactuadas.",
+        "explicacao": "A alternativa B está correta porque o art. 20, §1º expressamente permite a prorrogação do registro de preços por igual período ao da validade original.",
+        "analise_distratores": {
+          "A": "Incorreta - A validade é de até 12 meses, mas pode ser prorrogada, portanto não é 'máxima' de 1 ano.",
+          "B": "Correta - Conforme previsão expressa do art. 20, §1º.",
+          "C": "Incorreta - As adesões são por chamamento público, não por convite.",
+          "D": "Incorreta - O registro não vincula automaticamente todos os órgãos; a adesão é facultativa.",
+          "E": "Incorreta - A ata pode ser celebrada com vários licitantes habilitados, não apenas com o vencedor."
+        }
+      }
+    },
+    {
+      "id": "17",
+      "dificuldade": "Facil",
+      "enunciado": "Nos termos da Lei 14.133/2021, a declaração de inidoneidade do licitante:",
+      "alternativas": {
+        "A": "impede a participação em licitações por 2 anos.",
+        "B": "impede a contratação com a administração pública enquanto persistirem os motivos.",
+        "C": "suspende as atividades da empresa por 6 meses.",
+        "D": "aplica multa equivalente a 10% do faturamento anual.",
+        "E": "é decretada apenas por decisão judicial."
+      },
+      "gabarito": "B",
+      "justificativa": {
+        "artigo": "Art. 171, §2º",
+        "texto_legal": "Art. 171, §2º: A declaração de inidoneidade impede a participação em licitações e a contratação com a administração pública enquanto persistirem os motivos que a determinaram.",
+        "explicacao": "A alternativa B está correta porque reproduz literalmente a previsão do art. 171, §2º sobre os efeitos da declaração de inidoneidade.",
+        "analise_distratores": {
+          "A": "Incorreta - A inidoneidade não tem prazo fixo; persiste enquanto existirem os motivos, conforme art. 171, §2º.",
+          "B": "Correta - Reprodução literal do disposto no art. 171, §2º.",
+          "C": "Incorreta - A lei não prevê suspensão de atividades como efeito da inidoneidade.",
+          "D": "Incorreta - Não há previsão legal de multa de 10% do faturamento.",
+          "E": "Incorreta - A declaração de inidoneidade é feita pela administração, não depende exclusivamente de decisão judicial."
+        }
+      }
+    },
+    {
+      "id": "18",
+      "dificuldade": "Dificil",
+      "enunciado": "À luz da Lei 14.133/2021, sobre o critério de julgamento 'técnica e preço', é INCORRETO afirmar:",
+      "alternativas": {
+        "A": "O aspecto técnico deve ter peso mínimo de 60%.",
+        "B": "A proposta de menor preço não é automaticamente vencedora.",
+        "C": "Apenas as propostas técnicas aprovadas têm os preços abertos.",
+        "D": "A avaliação técnica é realizada antes da abertura dos preços.",
+        "E": "Pode ser utilizado para contratação de serviços de engenharia."
+      },
+      "gabarito": "A",
+      "justificativa": {
+        "artigo": "Art. 48, §2º",
+        "texto_legal": "Art. 48, §2º: No julgamento das propostas pelo critério de técnica e preço, somente após a avaliação e classificação das propostas técnicas serão abertas as propostas de preço.",
+        "explicacao": "A alternativa A está incorreta porque a Lei 14.133/2021 não estabelece percentual mínimo de 60% para o aspecto técnico no critério técnica e preço. A distribuição de pesos é definida no edital conforme as características do objeto.",
+        "analise_distratores": {
+          "A": "Incorreta - A lei não estabelece percentual mínimo obrigatório para o aspecto técnico.",
+          "B": "Correta - No critério técnica e preço, a proposta de menor preço não é automaticamente vencedora.",
+          "C": "Correta - Conforme art. 48, §2º, só as propostas técnicas aprovadas têm preços abertos.",
+          "D": "Correta - A avaliação técnica precede a abertura dos preços, conforme art. 48, §2º.",
+          "E": "Correta - O critério técnica e preço pode ser utilizado para serviços de engenharia."
+        }
+      }
+    },
+    {
+      "id": "19",
+      "dificuldade": "Facil",
+      "enunciado": "De acordo com a Lei 14.133/2021, o prazo para a administração adjudicar o objeto após a sessão de julgamento é de:",
+      "alternativas": {
+        "A": "5 dias úteis.",
+        "B": "10 dias úteis.",
+        "C": "15 dias úteis.",
+        "D": "20 dias úteis.",
+        "E": "30 dias."
+      },
+      "gabarito": "A",
+      "justificativa": {
+        "artigo": "Art. 133",
+        "texto_legal": "Art. 133. A adjudicação será feita no prazo de 5 (cinco) dias úteis, contados da sessão de julgamento.",
+        "explicacao": "A alternativa A está correta porque o art. 133 estabelece expressamente o prazo de 5 dias úteis para a adjudicação após a sessão de julgamento.",
+        "analise_distratores": {
+          "A": "Correta - Prazo exato previsto no art. 133.",
+          "B": "Incorreta - 10 dias é superior ao prazo legal estabelecido.",
+          "C": "Incorreta - 15 dias ultrapassa o prazo previsto na lei.",
+          "D": "Incorreta - 20 dias não corresponde ao prazo legal.",
+          "E": "Incorreta - 30 dias é significativamente superior ao prazo de 5 dias úteis."
+        }
+      }
+    },
+    {
+      "id": "20",
+      "dificuldade": "Medio",
+      "enunciado": "Sobre as garantias contratuais na Lei 14.133/2021, é CORRETO afirmar:",
+      "alternativas": {
+        "A": "A garantia de execução contratual é obrigatória em todos os contratos.",
+        "B": "A garantia de oferta substitui a garantia de execução contratual.",
+        "C": "As garantias podem ser prestadas por meio de seguro-garantia.",
+        "D": "É vedada a exigência de garantias para microempresas.",
+        "E": "A garantia de execução deve ser prestada antes da assinatura do contrato."
+      },
+      "gabarito": "C",
+      "justificativa": {
+        "artigo": "Art. 152, §3º",
+        "texto_legal": "Art. 152, §3º: As garantias poderão ser prestadas por meio de seguro-garantia, fiança bancária ou títulos da dívida pública.",
+        "explicacao": "A alternativa C está correta porque o art. 152, §3º expressamente prevê o seguro-garantia como uma das formas de prestação de garantias contratuais.",
+        "analise_distratores": {
+          "A": "Incorreta - A garantia não é obrigatória em todos os contratos; depende do valor e tipo de contratação.",
+          "B": "Incorreta - A garantia de oferta e a garantia de execução são distintas e cumprem finalidades diferentes.",
+          "C": "Correta - Conforme previsão expressa do art. 152, §3º.",
+          "D": "Incorreta - Não há vedação absoluta; microempresas podem ser dispensadas em alguns casos, mas não há proibição geral.",
+          "E": "Incorreta - A garantia de execução é prestada após a homologação e antes da assinatura do contrato, mas a lei não estabelece momento específico."
+        }
+      }
+    }
+  ]
+}
